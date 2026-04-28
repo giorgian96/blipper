@@ -1,7 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlipController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', [BlipController::class, 'index'])->name('home');

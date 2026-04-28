@@ -29,7 +29,7 @@
 
     <footer class="footer footer-center p-5 bg-base-300 text-base-content text-xs">
         <div>
-            <p>©{{ date('Y') }} Blipper</p>
+            <p>Blipper {{ date('Y') }}</p>
         </div>
     </footer>
 </body>
