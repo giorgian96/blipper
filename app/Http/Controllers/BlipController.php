@@ -52,24 +52,32 @@ class BlipController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Blip $blip)
     {
-        //
+        return view('blips.edit', compact('blip'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Blip $blip)
     {
-        //
+        $validated = $request->validate([
+            'message' => 'required|string|max:255',
+        ]);
+
+        $blip->update($validated);
+
+        return redirect('/')->with('success', 'Your blip has been updated!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Blip $blip)
     {
-        //
+        $blip->delete();
+
+        return redirect('/')->with('success', 'Your blip has been deleted!');
     }
 }
