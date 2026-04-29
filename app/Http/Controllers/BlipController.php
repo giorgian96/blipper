@@ -30,7 +30,15 @@ class BlipController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'message' => 'required|string|max:255',
+        ]);
+
+        Blip::create([
+            'message' => $validated['message'],
+        ]);
+
+        return redirect('/')->with('success', 'Blip created!');
     }
 
     /**
