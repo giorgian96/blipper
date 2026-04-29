@@ -1,10 +1,20 @@
 <?php
 
+use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BlipController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [BlipController::class, 'index'])->name('home');
-Route::post('/blips', [BlipController::class, 'store']);
-Route::get('/blips/{blip}/edit', [BlipController::class, 'edit']);
-Route::put('/blips/{blip}', [BlipController::class, 'update']);
-Route::delete('/blips/{blip}', [BlipController::class, 'destroy']);
+
+Route::middleware('auth')->group(function() {
+    Route::post('/blips', [BlipController::class, 'store']);
+    Route::get('/blips/{blip}/edit', [BlipController::class, 'edit']);
+    Route::put('/blips/{blip}', [BlipController::class, 'update']);
+    Route::delete('/blips/{blip}', [BlipController::class, 'destroy']);
+});
+
+
+Route::view('/register', 'auth.register')->middleware('guest')->name('register');
+Route::post('/register', RegisterController::class)->middleware('guest');
+Route::post('/logout', LogoutController::class)->middleware('auth');

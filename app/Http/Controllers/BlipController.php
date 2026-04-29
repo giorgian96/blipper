@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blip;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class BlipController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Display a listing of the resource.
      */
@@ -34,9 +37,7 @@ class BlipController extends Controller
             'message' => 'required|string|max:255',
         ]);
 
-        Blip::create([
-            'message' => $validated['message'],
-        ]);
+        auth()->user()->blips()->create($validated);
 
         return redirect('/')->with('success', 'Blip created!');
     }
@@ -54,6 +55,7 @@ class BlipController extends Controller
      */
     public function edit(Blip $blip)
     {
+        $this->authorize('update', $blip);
         return view('blips.edit', compact('blip'));
     }
 
@@ -62,6 +64,8 @@ class BlipController extends Controller
      */
     public function update(Request $request, Blip $blip)
     {
+        $this->authorize('update', $blip);
+
         $validated = $request->validate([
             'message' => 'required|string|max:255',
         ]);
@@ -76,8 +80,8 @@ class BlipController extends Controller
      */
     public function destroy(Blip $blip)
     {
+        $this->authorize('update', $blip);
         $blip->delete();
-
         return redirect('/')->with('success', 'Your blip has been deleted!');
     }
 }
